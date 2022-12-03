@@ -13,7 +13,10 @@ const theme = createTheme({
 	palette: {
 		mode: 'light',
 		primary: { main: Palette.PeachCrayola },
-		secondary: { main: Palette.GrannySmithApple }
+		secondary: { main: Palette.Iceberg },
+		background: {
+			default: '#fafafa'
+		}
 	},
 	components: {
 		MuiCssBaseline: {
