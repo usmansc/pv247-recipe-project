@@ -1,9 +1,4 @@
-import { Paper, Typography } from '@mui/material';
-
-const Home = () => (
-	<Paper>
-		<Typography>Home</Typography>
-	</Paper>
-);
+import Recipe from './Recipe';
+const Home = () => <Recipe />;
 
 export default Home;
