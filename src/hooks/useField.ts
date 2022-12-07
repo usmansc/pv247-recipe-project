@@ -32,7 +32,8 @@ const useField = (id: string, ...validators: FieldValidator[]) => {
 			onBlur: useCallback(() => setTouched(true), []),
 			error: touched && !!error,
 			helperText: touched && error ? error : undefined
-		}
+		},
+		setValue
 	] as const;
 };
 
