@@ -23,6 +23,9 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
 								</Button>
 							) : (
 								<>
+									<Button component={Link} to="/add" color="inherit">
+										Add Recipe
+									</Button>
 									<Button component={Link} to="/profile" color="inherit">
 										Profile
 									</Button>

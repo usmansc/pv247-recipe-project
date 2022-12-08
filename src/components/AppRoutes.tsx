@@ -6,6 +6,7 @@ import Login from '../pages/Login';
 import NotFound from '../pages/NotFound';
 import Profile from '../pages/Profile';
 import Recipe from '../pages/Recipe';
+import AddRecipe from '../pages/AddRecipe';
 
 const AppRoutes = () => {
 	const user = useLoggedInUser();
@@ -14,6 +15,7 @@ const AppRoutes = () => {
 			<Route path="/" element={<Home />} />
 			<Route path="/recipe" element={<Recipe />} />
 			<Route path="/recipe/:id" element={<Recipe />} />
+			{user && <Route path="/add" element={<AddRecipe />} />}
 			{user ? (
 				<Route path="/profile" element={<Profile />} />
 			) : (

@@ -10,6 +10,7 @@ import {
 	CardActions,
 	ListItem
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 export type RecipeType = {
 	id: number;
@@ -17,6 +18,7 @@ export type RecipeType = {
 	description: string;
 	tags: string[];
 	image: string;
+	ingredietns: string[];
 };
 
 const RecipeCard = ({ recipe }: { recipe: RecipeType }) => (
@@ -49,8 +51,13 @@ const RecipeCard = ({ recipe }: { recipe: RecipeType }) => (
 			</CardContent>
 		</CardActionArea>
 		<CardActions>
-			<Button size="large" color="primary">
-				Check recipe details
+			<Button
+				component={Link}
+				to={`/recipe/${recipe.id}`}
+				size="small"
+				color="primary"
+			>
+				See more
 			</Button>
 		</CardActions>
 	</Card>

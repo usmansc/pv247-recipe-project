@@ -6,24 +6,36 @@ import {
 	TextField,
 	Typography
 } from '@mui/material';
+import { useParams } from 'react-router';
 
 import RecipeCard, { RecipeType } from '../components/RecipeCard';
+import RecipeDetail from '../components/RecipeDetail';
 import RecipeGrid from '../components/RecipeGrid';
 import TagGrid from '../components/TagGrid';
 
-const Recipe = () => (
-	<Container>
-		<Typography variant="h2">Recipe</Typography>
-		<TextField
-			id="outlined-search"
-			label="Search field"
-			type="search"
-			fullWidth
-		/>
-		<TagGrid tags={generateRandomTags(20)} />
-		<RecipeGrid recipes={generateRandomRecipes(20)} />
-	</Container>
-);
+const Recipe = () => {
+	const { id } = useParams();
+	{
+		return !id ? (
+			<Container>
+				<Typography variant="h2">Recipe</Typography>
+				<TextField
+					id="outlined-search"
+					label="Search field"
+					type="search"
+					fullWidth
+				/>
+				<TagGrid tags={generateRandomTags(20)} />
+				<RecipeGrid recipes={generateRandomRecipes(20)} />
+			</Container>
+		) : (
+			<Container>
+				<Typography variant="h2">Recipe</Typography>
+				<RecipeDetail />
+			</Container>
+		);
+	}
+};
 
 const generateRandomTags = (count: number): string[] => {
 	const tags: string[] = [];
@@ -45,7 +57,8 @@ const generateRandomRecipes = (count: number): RecipeType[] => {
 			name: `Recipe ${i}`,
 			description: `Description ${i}`,
 			tags: [`tag${i}`, `tag${i + 1}`],
-			image: 'https://picsum.photos/400/300'
+			image: 'https://picsum.photos/400/300',
+			ingredietns: [`apple`, `banana`, `orange`]
 		});
 	}
 
