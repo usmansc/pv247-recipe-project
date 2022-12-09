@@ -1,10 +1,12 @@
-// Grid of tags(strings), tags are chips from mui
-// array of strings is passed as prop
-
 import { Grid, Chip } from '@mui/material';
 
-const TagGrid = (props: { tags: string[] }) => {
-	const { tags } = props;
+import { Ingredient, Tag } from '../utils/firebase';
+
+const TagGrid = (props: {
+	tags: Tag[] | Ingredient[];
+	onClick: (tag: string) => void;
+}) => {
+	const { tags, onClick } = props;
 	return (
 		<Grid
 			container
@@ -21,8 +23,8 @@ const TagGrid = (props: { tags: string[] }) => {
 			}}
 		>
 			{tags.map(tag => (
-				<Grid item key={tag}>
-					<Chip label={tag} />
+				<Grid item key={tag.id}>
+					<Chip label={tag.name} onClick={() => onClick(tag.name)} />
 				</Grid>
 			))}
 		</Grid>

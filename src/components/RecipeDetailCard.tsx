@@ -5,12 +5,13 @@ import {
 	Typography,
 	Stack,
 	ListItem,
-	Chip
+	Chip,
+	List
 } from '@mui/material';
 
-import { RecipeType } from './RecipeCard';
+import { Recipe } from '../utils/firebase';
 
-const RecipeDetailCard = ({ recipe }: { recipe: RecipeType }) => (
+const RecipeDetailCard = ({ recipe }: { recipe: Recipe }) => (
 	<Card>
 		<CardMedia
 			component="img"
@@ -31,11 +32,20 @@ const RecipeDetailCard = ({ recipe }: { recipe: RecipeType }) => (
 			</Typography>
 			<Stack direction="row" spacing={0}>
 				{recipe.tags.map(tag => (
-					<ListItem key={tag}>
-						<Chip label={tag} />
+					<ListItem key={tag.name}>
+						<Chip label={tag.name} />
 					</ListItem>
 				))}
 			</Stack>
+			<List dense>
+				{recipe.ingredients.map(ingredient => (
+					<ListItem key={ingredient.name}>
+						<Typography variant="body2" color="text.secondary">
+							{`${ingredient.amount.value} ${ingredient.amount.unit} ${ingredient.name}`}
+						</Typography>
+					</ListItem>
+				))}
+			</List>
 		</CardContent>
 	</Card>
 );

@@ -1,8 +1,10 @@
 import { Grid } from '@mui/material';
 
-import RecipeCard, { RecipeType } from './RecipeCard';
+import { Recipe } from '../utils/firebase';
 
-const RecipeGrid = ({ recipes }: { recipes: RecipeType[] }) => (
+import RecipeCard from './RecipeCard';
+
+const RecipeGrid = ({ recipes }: { recipes: Recipe[] }) => (
 	<Grid container spacing={2}>
 		{recipes.map(recipe => (
 			<Grid item xs={12} sm={6} md={4} lg={3} key={recipe.id}>
