@@ -1,10 +1,8 @@
-import { Alert, Grid, Button, Typography } from '@mui/material';
-import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { Grid, Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 import { Recipe } from '../utils/firebase';
 
-import { RecipeType } from './RecipeCard';
 import RecipeDetailCard from './RecipeDetailCard';
 
 // GEt recipe as prop

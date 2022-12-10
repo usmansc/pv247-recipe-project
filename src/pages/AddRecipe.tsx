@@ -6,17 +6,14 @@
 import { TextField, Button, Stack } from '@mui/material';
 import {
 	addDoc,
-	deleteDoc,
 	getDocs,
 	query,
-	setDoc,
 	updateDoc,
 	where
 } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useLocation } from 'react-router';
 
-import { RecipeType } from '../components/RecipeCard';
 import TagGrid from '../components/TagGrid';
 import useLoggedInUser from '../hooks/useLoggedInUser';
 import {

@@ -16,11 +16,7 @@ import {
 	deleteField,
 	doc,
 	getDoc,
-	query,
-	setDoc,
-	updateDoc,
-	where
-} from 'firebase/firestore';
+	updateDoc} from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -28,18 +24,7 @@ import useLoggedInUser from '../hooks/useLoggedInUser';
 import {
 	favoritesCollection,
 	favoritesDocument,
-	Recipe,
-	recipesCollection
-} from '../utils/firebase';
-
-export type RecipeType = {
-	id: number;
-	name: string;
-	description: string;
-	tags: string[];
-	image: string;
-	ingredietns: string[];
-};
+	Recipe} from '../utils/firebase';
 
 const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
 	const user = useLoggedInUser();
@@ -105,12 +90,8 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
 					<IconButton
 						aria-label="add to favorites"
 						onClick={() => {
-							// In favoritesCollection, add this recipe id to the favorite list of the user
-							// If the user does not have a favorite list, create one
-							// Structure of favoritesCollection: - userId: { recipeId1, recipeId2, ... }
 							if (!user) return;
 							if (isFavorite) {
-								// Remove from favorites
 								updateDoc(favoritesDocument(user?.uid ?? ''), {
 									[recipe.id]: deleteField()
 								});
