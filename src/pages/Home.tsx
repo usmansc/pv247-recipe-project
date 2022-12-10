@@ -8,7 +8,7 @@ import { Nutrient, useFoodInfo } from '../hooks/useFoodInfo';
 import RecipePage from './RecipePage';
 
 const Home = () => {
-	const [search, searchProps, setSearch] = useField('ingredient');
+	const [search, searchProps, setSearch] = useField('ingredient', '');
 	const { options, loading } = useFoodSuggestions(search);
 	const { data } = useFoodInfo(search);
 	const onChange = useCallback(

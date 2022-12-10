@@ -11,6 +11,8 @@ import {
 	onAuthStateChanged,
 	signInWithEmailAndPassword,
 	signOut as authSignOut,
+	updateEmail,
+	updateProfile,
 	User
 } from 'firebase/auth';
 
@@ -70,6 +72,14 @@ export const signOut = () => authSignOut(auth);
 // Subscribe to auth state changes
 export const onAuthChanged = (callback: (u: User | null) => void) =>
 	onAuthStateChanged(auth, callback);
+
+// update user email
+export const updateUserEmail = (user: User, email: string) =>
+	updateEmail(user, email);
+
+// update user data
+export const updateUserData = (user: User, data: { displayName: string }) =>
+	updateProfile(user, data);
 
 // Firestore
 const db = getFirestore();

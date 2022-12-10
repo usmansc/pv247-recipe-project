@@ -2,8 +2,12 @@ import { ChangeEvent, useCallback, useMemo, useState } from 'react';
 
 import { FieldValidator } from '../utils/validation';
 
-const useField = (id: string, ...validators: FieldValidator[]) => {
-	const [value, setValue] = useState('');
+const useField = (
+	id: string,
+	initialValue: string,
+	...validators: FieldValidator[]
+) => {
+	const [value, setValue] = useState(initialValue);
 	const [touched, setTouched] = useState(false);
 
 	const onChange = useCallback(

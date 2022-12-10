@@ -21,11 +21,13 @@ const Login = () => {
 	const navigate = useNavigate();
 	const [email, emailProps] = useField(
 		'email',
+		'',
 		requiredValidator,
 		emailValidator
 	);
 	const [password, passwordProps] = useField(
 		'password',
+		'',
 		requiredValidator,
 		passwordValidator
 	);

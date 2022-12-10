@@ -25,14 +25,21 @@ const stringToColor = (string: string) => {
 	return color;
 };
 
-const stringAvatar = (name: string) => ({
-	sx: {
-		width: 64,
-		height: 64,
-		bgcolor: stringToColor(name)
-	},
-	children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`
-});
+const stringAvatar = (name: string) => {
+	const initials = name
+		.split(' ')
+		.map(n => n[0])
+		.join('')
+		.slice(0, 3);
+	return {
+		sx: {
+			width: 56,
+			height: 56,
+			bgcolor: stringToColor(name ? name : 'UNKNOWN')
+		},
+		children: initials ? initials : '?'
+	};
+};
 
 export const UserAvatar = (props: UserAvatarProps) => (
 	<Avatar {...stringAvatar(props.name)} />
