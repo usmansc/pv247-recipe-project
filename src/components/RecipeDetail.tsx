@@ -5,8 +5,6 @@ import { Recipe } from '../utils/firebase';
 
 import RecipeDetailCard from './RecipeDetailCard';
 
-// GEt recipe as prop
-// Accept callback for delete recipe as prop
 const RecipeDetail = ({
 	recipe,
 	deleteRecipe
