@@ -4,13 +4,7 @@
 // User will be redirected to the recipe page
 
 import { TextField, Button, Stack } from '@mui/material';
-import {
-	addDoc,
-	getDocs,
-	query,
-	updateDoc,
-	where
-} from 'firebase/firestore';
+import { addDoc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { useState } from 'react';
 import { useLocation } from 'react-router';
 

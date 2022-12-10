@@ -12,41 +12,16 @@ import {
 	ListItem,
 	IconButton
 } from '@mui/material';
-import {
-	deleteField,
-	doc,
-	getDoc,
-	updateDoc} from 'firebase/firestore';
-import { useState, useEffect } from 'react';
+import { deleteField, updateDoc } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 
+import useFavorites from '../hooks/useFavorites';
 import useLoggedInUser from '../hooks/useLoggedInUser';
-import {
-	favoritesCollection,
-	favoritesDocument,
-	Recipe} from '../utils/firebase';
+import { favoritesDocument, Recipe } from '../utils/firebase';
 
 const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
 	const user = useLoggedInUser();
-	const [isFavorite, setIsFavorite] = useState(false);
-
-	useEffect(() => {
-		if (!user) return;
-		const getFavorites = async () => {
-			const docRef = doc(favoritesCollection, user.uid);
-			const docSnap = await getDoc(docRef);
-			if (docSnap.exists()) {
-				const data = docSnap.data();
-				for (const key in data) {
-					if (data[key] === recipe.id) {
-						setIsFavorite(true);
-						break;
-					}
-				}
-			}
-		};
-		getFavorites();
-	}, [user, recipe.id]);
+	const [isFavorite, setIsFavorite] = useFavorites(recipe.id);
 
 	return (
 		<Card sx={{ maxWidth: 345 }}>
