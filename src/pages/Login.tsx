@@ -6,6 +6,8 @@ import {
 	TextField,
 	Typography
 } from '@mui/material';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import useField from '../hooks/useField';
 import {
@@ -16,6 +18,7 @@ import {
 import { signIn, signUp } from '../utils/firebase';
 
 const Login = () => {
+	const navigate = useNavigate();
 	const [email, emailProps] = useField(
 		'email',
 		requiredValidator,
@@ -26,6 +29,16 @@ const Login = () => {
 		requiredValidator,
 		passwordValidator
 	);
+
+	const onSignUp = useCallback(async () => {
+		await signUp(email, password);
+		navigate('/');
+	}, [email, password]);
+
+	const onSignIn = useCallback(async () => {
+		await signIn(email, password);
+		navigate('/');
+	}, [email, password]);
 	return (
 		<Container
 			maxWidth="sm"
@@ -59,14 +72,10 @@ const Login = () => {
 						mt: 2
 					}}
 				>
-					<Button
-						variant="outlined"
-						color="secondary"
-						onClick={() => signUp(email, password)}
-					>
+					<Button variant="outlined" color="secondary" onClick={onSignUp}>
 						Sign Up
 					</Button>
-					<Button variant="contained" onClick={() => signIn(email, password)}>
+					<Button variant="contained" onClick={onSignIn}>
 						Sign In
 					</Button>
 				</Box>
