@@ -5,6 +5,8 @@ import useField from '../hooks/useField';
 import { useFoodSuggestions } from '../hooks/useFoodSuggestions';
 import { Nutrient, useFoodInfo } from '../hooks/useFoodInfo';
 
+import RecipePage from './RecipePage';
+
 const Home = () => {
 	const [search, searchProps, setSearch] = useField('ingredient');
 	const { options, loading } = useFoodSuggestions(search);
@@ -42,6 +44,7 @@ const Home = () => {
 			) : (
 				<Typography>UNKNOWN</Typography>
 			)}
+			<RecipePage />
 		</Paper>
 	);
 };

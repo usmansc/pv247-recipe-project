@@ -13,6 +13,7 @@ import {
 	passwordValidator,
 	requiredValidator
 } from '../utils/validation';
+import { signIn, signUp } from '../utils/firebase';
 
 const Login = () => {
 	const [email, emailProps] = useField(
@@ -58,10 +59,16 @@ const Login = () => {
 						mt: 2
 					}}
 				>
-					<Button variant="outlined" color="secondary">
+					<Button
+						variant="outlined"
+						color="secondary"
+						onClick={() => signUp(email, password)}
+					>
 						Sign Up
 					</Button>
-					<Button variant="contained">Sign In</Button>
+					<Button variant="contained" onClick={() => signIn(email, password)}>
+						Sign In
+					</Button>
 				</Box>
 			</Paper>
 		</Container>
