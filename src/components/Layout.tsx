@@ -1,5 +1,5 @@
-import { FC, PropsWithChildren } from 'react';
-import { Link } from 'react-router-dom';
+import { FC, PropsWithChildren, useCallback } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppBar, Box, Button, Container, Toolbar } from '@mui/material';
 
 import useLoggedInUser from '../hooks/useLoggedInUser';
@@ -7,6 +7,11 @@ import { signOut } from '../utils/firebase';
 
 const Layout: FC<PropsWithChildren> = ({ children }) => {
 	const user = useLoggedInUser();
+	const navigate = useNavigate();
+	const onSignOut = useCallback(async () => {
+		await signOut();
+		navigate('/');
+	}, [navigate]);
 	return (
 		<>
 			<Box>
@@ -29,7 +34,7 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
 									<Button component={Link} to="/profile" color="inherit">
 										Profile
 									</Button>
-									<Button onClick={signOut} color="inherit">
+									<Button onClick={onSignOut} color="inherit">
 										Logout
 									</Button>
 								</>
