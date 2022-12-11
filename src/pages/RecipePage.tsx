@@ -52,10 +52,12 @@ const RecipePage = () => {
 	}, []);
 
 	const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>(recipes);
+	const [filteredTags, setFilteredTags] = useState<Tag[]>([]);
 
 	const showFavorites = async () => {
 		if (filteredRecipes.length !== 0) {
 			setFilteredRecipes([]);
+			setFilteredTags([]);
 			return;
 		}
 		if (!user) return;
@@ -106,12 +108,36 @@ const RecipePage = () => {
 				/>
 				<TagGrid
 					tags={tags}
-					onClick={name => {
-						setFilteredRecipes(
-							recipes.filter(recipe =>
-								recipe.tags.some(tag => tag.name === name)
-							)
-						);
+					filteredTags={filteredTags}
+					onClick={id => {
+						if (!id) return;
+						const tag = tags.find(tag => tag.id === id);
+						if (tag) {
+							if (filteredTags.some(tag => tag.id === id)) {
+								// Remove tag from filteredTags
+								setFilteredTags(filteredTags.filter(tag => tag.id !== id));
+								setFilteredRecipes(
+									filteredTags
+										.filter(tag => tag.id !== id)
+										.reduce((acc, tag) => {
+											const recipesWithTag = recipes.filter(recipe =>
+												recipe.tags.some(t => t.id === tag.id)
+											);
+											return [...acc, ...recipesWithTag];
+										}, [] as Recipe[])
+								);
+							} else {
+								setFilteredTags([...filteredTags, tag]);
+								setFilteredRecipes(
+									[...filteredTags, tag].reduce((acc, tag) => {
+										const recipesWithTag = recipes.filter(recipe =>
+											recipe.tags.some(t => t.id === tag.id)
+										);
+										return [...acc, ...recipesWithTag];
+									}, [] as Recipe[])
+								);
+							}
+						}
 					}}
 				/>
 				<RecipeGrid

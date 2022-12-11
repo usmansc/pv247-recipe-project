@@ -12,7 +12,7 @@ import {
 	ListItem,
 	IconButton
 } from '@mui/material';
-import { deleteField, updateDoc } from 'firebase/firestore';
+import { deleteField, setDoc, updateDoc } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 
 import useFavorites from '../hooks/useFavorites';
@@ -73,7 +73,7 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
 								setIsFavorite(false);
 								return;
 							}
-							updateDoc(favoritesDocument(user?.uid ?? ''), {
+							setDoc(favoritesDocument(user?.uid ?? ''), {
 								[recipe.id]: recipe.id
 							});
 							setIsFavorite(true);

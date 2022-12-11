@@ -1,12 +1,22 @@
 import { Button, Grid, Paper, TextField, Typography } from '@mui/material';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { deleteDoc, getDocs, query, where } from 'firebase/firestore';
 
 import { UserAvatar } from '../components/UserAvatar';
 import { Category, CategorySelection } from '../components/CategorySelection';
 import useField from '../hooks/useField';
 import { emailValidator, requiredValidator } from '../utils/validation';
 import useLoggedInUser from '../hooks/useLoggedInUser';
-import { updateUserData, updateUserEmail } from '../utils/firebase';
+import {
+	Recipe,
+	recipesCollection,
+	Tag,
+	tagsCollection,
+	updateUserData,
+	updateUserEmail
+} from '../utils/firebase';
+import RecipeGrid from '../components/RecipeGrid';
+import TagGrid from '../components/TagGrid';
 
 const Profile = () => {
 	const user = useLoggedInUser();
@@ -29,6 +39,41 @@ const Profile = () => {
 			updateUserEmail(user, email)
 		]).catch(console.error);
 	}, [user, displayName, email]);
+	const [tags, setTags] = useState<Tag[]>([]);
+	useEffect(() => {
+		const getTags = async () => {
+			const querySnapshot = await getDocs(tagsCollection);
+			const tags: Tag[] = [];
+			querySnapshot.forEach(doc => {
+				tags.push(doc.data() as Tag);
+			});
+			setTags(tags);
+		};
+		getTags();
+	}, []);
+
+	const [filteredTags, setFilteredTags] = useState<Tag[]>([]);
+
+	const [userRecipes, setUserRecipes] = useState<Recipe[]>([]);
+
+	useEffect(() => {
+		if (!user) {
+			return;
+		}
+		const getUserRecipes = async () => {
+			const q = query(recipesCollection, where('user', '==', user.uid));
+			const querySnapshot = getDocs(q);
+			querySnapshot.then(querySnapshot => {
+				const recipes: Recipe[] = [];
+				querySnapshot.forEach(doc => {
+					recipes.push(doc.data() as Recipe);
+				});
+				setUserRecipes(recipes);
+			});
+		};
+		getUserRecipes();
+	}, [user]);
+
 	return (
 		<Paper sx={{ p: 4 }}>
 			<Typography variant="h4" component="h2" mb={3}>
@@ -59,69 +104,31 @@ const Profile = () => {
 				</Grid>
 			</Grid>
 			<Typography variant="h5" component="h3" my={3} mb={1}>
-				Favorite Categories
+				Favorite Tags
 			</Typography>
-			<CategorySelection
-				categories={categories}
-				initialSelection={['1', '2']}
-				onChange={() => {
-					console.log("I'm a callback");
+			<TagGrid
+				tags={tags}
+				filteredTags={filteredTags}
+				onClick={id => {
+					if (!id) return;
+					const tag = tags.find(tag => tag.id === id);
+					if (tag) {
+						if (filteredTags.some(tag => tag.id === id)) {
+							// Remove tag from filteredTags
+							setFilteredTags(filteredTags.filter(tag => tag.id !== id));
+						} else {
+							setFilteredTags([...filteredTags, tag]);
+						}
+					}
 				}}
 			/>
 			<Typography variant="h5" component="h3" my={3} mb={1}>
 				My Recipes
 			</Typography>
-			TODO
+			<RecipeGrid recipes={userRecipes} />
 		</Paper>
 	);
 };
-
-const categories: Category[] = [
-	{
-		id: '1',
-		name: 'Spaghetti'
-	},
-	{
-		id: '2',
-		name: 'Pizza'
-	},
-	{
-		id: '3',
-		name: 'Burger'
-	},
-	{
-		id: '4',
-		name: 'Salad'
-	},
-	{
-		id: '5',
-		name: 'Soup'
-	},
-	{
-		id: '6',
-		name: 'Dessert'
-	},
-	{
-		id: '7',
-		name: 'Breakfast'
-	},
-	{
-		id: '8',
-		name: 'Lunch'
-	},
-	{
-		id: '9',
-		name: 'Dinner'
-	},
-	{
-		id: '10',
-		name: 'Snack'
-	},
-	{
-		id: '11',
-		name: 'Drink'
-	}
-];
 
 const styles = {
 	field: {

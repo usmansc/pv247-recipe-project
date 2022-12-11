@@ -121,9 +121,13 @@ const AddRecipe = () => {
 				<Divider sx={{ width: '100%', maxWidth: '500px', height: '34px' }} />
 			</Box>
 			<Typography variant="h6">Active Tags</Typography>
-			<TagGrid tags={recipe.tags} onClick={handleTagClick} />
+			<TagGrid tags={recipe.tags} filteredTags={[]} onClick={handleTagClick} />
 			<Typography variant="h6">Active Ingredients</Typography>
-			<TagGrid tags={recipe.ingredients} onClick={handleIngredientClick} />
+			<TagGrid
+				tags={recipe.ingredients}
+				filteredTags={[]}
+				onClick={handleIngredientClick}
+			/>
 			<Typography variant="h6">Image Preview</Typography>
 			{recipe.image && (
 				<img src={recipe.image} alt="Not found" width={200} height={200} />
