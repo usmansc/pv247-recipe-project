@@ -16,15 +16,10 @@ import {
 	User
 } from 'firebase/auth';
 
+import { Config } from './config';
+
 // Initialize Firebase
-initializeApp({
-	apiKey: 'AIzaSyBqhvI73BUJNJYZJloUoljLIt_5ROv-ssE',
-	authDomain: 'pv247-recipe-project.firebaseapp.com',
-	projectId: 'pv247-recipe-project',
-	storageBucket: 'pv247-recipe-project.appspot.com',
-	messagingSenderId: '873032373311',
-	appId: '1:873032373311:web:da89f20bbb97f6236ad48a'
-});
+initializeApp(Config.firebase);
 
 export type Amount = {
 	id: string;
