@@ -1,4 +1,12 @@
-import { TextField, Button, Stack } from '@mui/material';
+import {
+	TextField,
+	Button,
+	Stack,
+	Typography,
+	Divider,
+	Paper
+} from '@mui/material';
+import { Box } from '@mui/system';
 import { useLocation } from 'react-router';
 
 import TagGrid from '../components/TagGrid';
@@ -39,6 +47,7 @@ const AddRecipe = () => {
 				fullWidth
 				value={recipe.name}
 				onChange={handleNameChange}
+				required
 			/>
 			<TextField
 				id="outlined-search"
@@ -49,6 +58,7 @@ const AddRecipe = () => {
 				fullWidth
 				value={recipe.description}
 				onChange={handleDescriptionChange}
+				required
 			/>
 			<TextField
 				id="outlined-search"
@@ -57,6 +67,7 @@ const AddRecipe = () => {
 				fullWidth
 				value={recipe.image}
 				onChange={handleImageChange}
+				required
 			/>
 			<Stack direction="row" spacing={2}>
 				<TextField
@@ -89,6 +100,8 @@ const AddRecipe = () => {
 					fullWidth
 					value={amount.value}
 					onChange={handleAmountChange}
+					inputMode="numeric"
+					defaultValue={0}
 				/>
 				<TextField
 					id="outlined-search"
@@ -104,10 +117,21 @@ const AddRecipe = () => {
 					</Button>
 				)}
 			</Stack>
-
+			<Box sx={{ display: 'flex', justifyContent: 'center' }}>
+				<Divider sx={{ width: '100%', maxWidth: '500px', height: '34px' }} />
+			</Box>
+			<Typography variant="h6">Active Tags</Typography>
 			<TagGrid tags={recipe.tags} onClick={handleTagClick} />
+			<Typography variant="h6">Active Ingredients</Typography>
 			<TagGrid tags={recipe.ingredients} onClick={handleIngredientClick} />
-			<Button type="submit" onClick={addRecipe}>
+			<Typography variant="h6">Image Preview</Typography>
+			{recipe.image && (
+				<img src={recipe.image} alt="Not found" width={200} height={200} />
+			)}
+			<Box sx={{ display: 'flex', justifyContent: 'center' }}>
+				<Divider sx={{ width: '100%', maxWidth: '500px', height: '34px' }} />
+			</Box>
+			<Button type="submit" onClick={addRecipe} variant="contained">
 				{recipeProp ? 'Update Recipe' : 'Add Recipe'}
 			</Button>
 		</form>
