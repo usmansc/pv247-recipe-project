@@ -5,11 +5,15 @@ import {
 	Typography,
 	Divider,
 	Paper,
-	Autocomplete
+	Autocomplete,
+	Collapse,
+	Alert,
+	IconButton
 } from '@mui/material';
 import { Box } from '@mui/system';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useLocation } from 'react-router';
+import CloseIcon from '@mui/icons-material/Close';
 
 import TagGrid from '../components/TagGrid';
 import useField from '../hooks/useField';
@@ -26,6 +30,8 @@ const AddRecipe = () => {
 	const [search, searchProps, setSearch] = useField('ingredient', '');
 	const { options, loading } = useFoodSuggestions(search);
 	const { data } = useFoodInfo(search);
+	const [open, setOpen] = useState(false);
+
 	const onChange = useCallback(
 		(_event: any, value: string | null) => {
 			setSearch(value ?? '');
@@ -165,7 +171,44 @@ const AddRecipe = () => {
 			<Box sx={{ display: 'flex', justifyContent: 'center' }}>
 				<Divider sx={{ width: '100%', maxWidth: '500px', height: '34px' }} />
 			</Box>
-			<Button type="submit" onClick={addRecipe} variant="contained">
+			<Collapse in={open}>
+				<Alert
+					action={
+						<IconButton
+							aria-label="close"
+							color="inherit"
+							size="small"
+							onClick={() => {
+								setOpen(false);
+							}}
+						>
+							<CloseIcon fontSize="inherit" />
+						</IconButton>
+					}
+					sx={{ mb: 2 }}
+				>
+					{recipeProp
+						? 'Recipe Updated, you can now go to the main page'
+						: 'Recipe Added, you can now go to the main page'}
+				</Alert>
+			</Collapse>
+			<Button
+				type="submit"
+				onClick={() => {
+					addRecipe;
+					// check if all required fields are filled
+					if (
+						recipe.name &&
+						recipe.description &&
+						recipe.image &&
+						recipe.tags.length > 0 &&
+						recipe.ingredients.length > 0
+					) {
+						setOpen(true);
+					}
+				}}
+				variant="contained"
+			>
 				{recipeProp ? 'Update Recipe' : 'Add Recipe'}
 			</Button>
 		</form>
