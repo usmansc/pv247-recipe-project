@@ -62,25 +62,27 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
 					>
 						See more
 					</Button>
-					<IconButton
-						aria-label="add to favorites"
-						onClick={() => {
-							if (!user) return;
-							if (isFavorite) {
-								updateDoc(favoritesDocument(user?.uid ?? ''), {
-									[recipe.id]: deleteField()
+					{user && (
+						<IconButton
+							aria-label="add to favorites"
+							onClick={() => {
+								if (!user) return;
+								if (isFavorite) {
+									updateDoc(favoritesDocument(user?.uid ?? ''), {
+										[recipe.id]: deleteField()
+									});
+									setIsFavorite(false);
+									return;
+								}
+								setDoc(favoritesDocument(user?.uid ?? ''), {
+									[recipe.id]: recipe.id
 								});
-								setIsFavorite(false);
-								return;
-							}
-							setDoc(favoritesDocument(user?.uid ?? ''), {
-								[recipe.id]: recipe.id
-							});
-							setIsFavorite(true);
-						}}
-					>
-						<Favorite sx={{ color: isFavorite ? 'red' : 'grey' }} />
-					</IconButton>
+								setIsFavorite(true);
+							}}
+						>
+							<Favorite sx={{ color: isFavorite ? 'red' : 'grey' }} />
+						</IconButton>
+					)}
 				</Stack>
 			</CardActions>
 		</Card>

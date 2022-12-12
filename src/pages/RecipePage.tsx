@@ -99,13 +99,6 @@ const RecipePage = () => {
 						{filteredRecipes.length === 0 ? 'Show favorites' : 'Show all'}
 					</Button>
 				</Stack>
-
-				<TextField
-					id="outlined-search"
-					label="Search field"
-					type="search"
-					fullWidth
-				/>
 				<TagGrid
 					tags={tags}
 					filteredTags={filteredTags}

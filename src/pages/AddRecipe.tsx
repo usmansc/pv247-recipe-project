@@ -4,18 +4,34 @@ import {
 	Stack,
 	Typography,
 	Divider,
-	Paper
+	Paper,
+	Autocomplete
 } from '@mui/material';
 import { Box } from '@mui/system';
+import { useCallback } from 'react';
 import { useLocation } from 'react-router';
 
 import TagGrid from '../components/TagGrid';
+import useField from '../hooks/useField';
+import { useFoodInfo } from '../hooks/useFoodInfo';
+import { useFoodSuggestions } from '../hooks/useFoodSuggestions';
 import useInitializeRecipe from '../hooks/useInitializeRecipe';
 import { Recipe } from '../utils/firebase';
+
+import { formatNutrient } from './Home';
 
 const AddRecipe = () => {
 	const location = useLocation();
 	const { recipeProp } = (location.state as { recipeProp: Recipe }) ?? {};
+	const [search, searchProps, setSearch] = useField('ingredient', '');
+	const { options, loading } = useFoodSuggestions(search);
+	const { data } = useFoodInfo(search);
+	const onChange = useCallback(
+		(_event: any, value: string | null) => {
+			setSearch(value ?? '');
+		},
+		[setSearch]
+	);
 
 	const {
 		tag,
@@ -84,14 +100,28 @@ const AddRecipe = () => {
 					</Button>
 				)}
 			</Stack>
-			<TextField
-				id="outlined-search"
-				label="Ingredient"
-				type="search"
-				fullWidth
-				value={ingredient.name}
-				onChange={handleIngredientChange}
+			<Autocomplete
+				renderInput={params => (
+					<TextField {...params} {...searchProps} label="Ingredient" />
+				)}
+				options={options}
+				loading={loading}
+				onChange={onChange}
 			/>
+			{data && (
+				<>
+					<Typography>{data.name}</Typography>
+					<Typography>Carbs: {formatNutrient(data.nutrients.carbs)}</Typography>
+					<Typography>
+						Energy: {formatNutrient(data.nutrients.energy)}
+					</Typography>
+					<Typography>Fat: {formatNutrient(data.nutrients.fat)}</Typography>
+					<Typography>
+						Protein: {formatNutrient(data.nutrients.protein)}
+					</Typography>
+					<Typography>Fiber: {formatNutrient(data.nutrients.fiber)}</Typography>
+				</>
+			)}
 			<Stack direction="row" spacing={2}>
 				<TextField
 					id="outlined-search"
