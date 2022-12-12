@@ -97,7 +97,11 @@ const RecipePage = () => {
 				<Stack spacing={2}>
 					<Typography variant="h2">Recipe</Typography>
 					<Button onClick={showFavorites} variant="contained" color="primary">
-						{filteredRecipes.length === 0 ? 'Show favorites' : 'Show all'}
+						{!user
+							? 'Show all'
+							: filteredRecipes.length === 0
+							? 'Show favorites'
+							: 'Show all'}
 					</Button>
 				</Stack>
 				<TagGrid
