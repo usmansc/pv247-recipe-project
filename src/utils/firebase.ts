@@ -106,3 +106,7 @@ export const favoritesCollection = collection(
 
 export const favoritesDocument = (userId: string) =>
 	doc(db, 'favorites', userId);
+
+export const userDocument = (userId: string) => doc(db, 'users', userId);
+
+export const userCollection = collection(db, 'users') as CollectionReference;

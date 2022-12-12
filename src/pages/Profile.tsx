@@ -1,6 +1,13 @@
 import { Button, Grid, Paper, TextField, Typography } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
-import { deleteDoc, getDocs, query, where } from 'firebase/firestore';
+import {
+	deleteDoc,
+	getDoc,
+	getDocs,
+	query,
+	setDoc,
+	where
+} from 'firebase/firestore';
 
 import { UserAvatar } from '../components/UserAvatar';
 import { Category, CategorySelection } from '../components/CategorySelection';
@@ -13,7 +20,8 @@ import {
 	Tag,
 	tagsCollection,
 	updateUserData,
-	updateUserEmail
+	updateUserEmail,
+	userDocument
 } from '../utils/firebase';
 import RecipeGrid from '../components/RecipeGrid';
 import TagGrid from '../components/TagGrid';
@@ -30,6 +38,22 @@ const Profile = () => {
 		requiredValidator,
 		emailValidator
 	);
+
+	useEffect(() => {
+		if (!user) {
+			return;
+		}
+
+		const getUserTags = async () => {
+			const document = userDocument(user.uid);
+			const userData = await (await getDoc(document)).data();
+			const filteredTags = userData?.filteredTags ?? [];
+			setFilteredTags(filteredTags);
+		};
+
+		getUserTags();
+	}, [user]);
+
 	const onUserDataSaved = useCallback(() => {
 		if (!user) {
 			return;
@@ -111,13 +135,20 @@ const Profile = () => {
 				filteredTags={filteredTags}
 				onClick={id => {
 					if (!id) return;
+
 					const tag = tags.find(tag => tag.id === id);
-					if (tag) {
+					if (tag && user) {
+						// Update the filteredTags state by adding or removing the tag
 						if (filteredTags.some(tag => tag.id === id)) {
-							// Remove tag from filteredTags
 							setFilteredTags(filteredTags.filter(tag => tag.id !== id));
+							setDoc(userDocument(user?.uid), {
+								filteredTags: filteredTags.filter(tag => tag.id !== id)
+							});
 						} else {
 							setFilteredTags([...filteredTags, tag]);
+							setDoc(userDocument(user?.uid), {
+								filteredTags: [...filteredTags, tag]
+							});
 						}
 					}
 				}}

@@ -21,7 +21,8 @@ import {
 	Recipe,
 	recipesCollection,
 	Tag,
-	tagsCollection
+	tagsCollection,
+	userDocument
 } from '../utils/firebase';
 
 const RecipePage = () => {
@@ -39,6 +40,24 @@ const RecipePage = () => {
 		ingredients: []
 	});
 
+	const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>(recipes);
+	const [filteredTags, setFilteredTags] = useState<Tag[]>([]);
+
+	useEffect(() => {
+		if (!user) {
+			return;
+		}
+
+		const getUserTags = async () => {
+			const document = userDocument(user.uid);
+			const userData = await (await getDoc(document)).data();
+			const innerFiltered: Tag[] = userData?.filteredTags ?? [];
+			setFilteredTags(innerFiltered);
+		};
+
+		getUserTags();
+	}, [user]);
+
 	useEffect(() => {
 		const getTags = async () => {
 			const querySnapshot = await getDocs(tagsCollection);
@@ -50,9 +69,6 @@ const RecipePage = () => {
 		};
 		getTags();
 	}, []);
-
-	const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>(recipes);
-	const [filteredTags, setFilteredTags] = useState<Tag[]>([]);
 
 	const showFavorites = async () => {
 		if (filteredRecipes.length !== 0) {
@@ -90,6 +106,20 @@ const RecipePage = () => {
 			getRecipes();
 		};
 	}, []);
+
+	useEffect(() => {
+		if (filteredTags.length === 0) {
+			setFilteredRecipes(recipes);
+			return;
+		}
+		const filteredRecipes = filteredTags.reduce((acc, tag) => {
+			const recipesWithTag = recipes.filter(recipe =>
+				recipe.tags.some(t => t.id === tag.id)
+			);
+			return [...acc, ...recipesWithTag];
+		}, [] as Recipe[]);
+		setFilteredRecipes(filteredRecipes);
+	}, [filteredTags]);
 
 	{
 		return !id ? (
