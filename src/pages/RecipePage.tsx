@@ -78,12 +78,17 @@ const RecipePage = () => {
 			const querySnapshot = await getDocs(recipesCollection);
 			const recipes: Recipe[] = [];
 			querySnapshot.forEach(doc => {
+				if (doc.data().id === id && id) {
+					setRecipe(doc.data() as Recipe);
+				}
 				// Push each recipe into the array
 				recipes.push(doc.data() as Recipe);
 			});
 			setRecipes(recipes);
 		};
-		getRecipes();
+		return () => {
+			getRecipes();
+		};
 	}, []);
 
 	{
