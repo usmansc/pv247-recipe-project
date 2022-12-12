@@ -4,7 +4,6 @@ import {
 	Stack,
 	Typography,
 	Divider,
-	Paper,
 	Autocomplete,
 	Collapse,
 	Alert,
@@ -139,14 +138,9 @@ const AddRecipe = () => {
 					inputMode="numeric"
 					defaultValue={0}
 				/>
-				<TextField
-					id="outlined-search"
-					label="Unit"
-					type="search"
-					fullWidth
-					value={unit}
-					onChange={handleUnitChange}
-				/>
+				<Typography variant="h6" sx={{ alignSelf: 'center' }}>
+					{unit}
+				</Typography>
 				{ingredient.name && amount.value && unit && (
 					<Button type="submit" onClick={addIngredientToRecipe}>
 						Add Ingredient

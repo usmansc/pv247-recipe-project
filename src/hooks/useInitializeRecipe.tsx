@@ -94,7 +94,7 @@ const useInitializeRecipe = (recipeProp: Recipe) => {
 					ingredients: []
 			  }
 	);
-	const [unit, setUnit] = useState<string>('');
+	const [unit, setUnit] = useState<string>('Grams');
 	const [amount, setAmount] = useState<Amount>({
 		id: genUniqueId(),
 		ingredient: ingredientId,
