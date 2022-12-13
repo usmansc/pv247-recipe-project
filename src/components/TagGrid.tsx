@@ -31,7 +31,6 @@ const TagGrid = (props: {
 						color="primary"
 						clickable
 						onClick={() => {
-							console.log('tag clicked', tag.id);
 							onClick(tag?.id);
 						}}
 						sx={{

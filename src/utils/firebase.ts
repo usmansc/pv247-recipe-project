@@ -33,6 +33,7 @@ export type Ingredient = {
 	recipe: string;
 	name: string;
 	amount: Amount;
+	energy: number;
 };
 
 export type Tag = {

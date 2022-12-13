@@ -37,6 +37,9 @@ const RecipeDetailCard = ({ recipe }: { recipe: Recipe }) => (
 					</ListItem>
 				))}
 			</Stack>
+			<Typography variant="h6" component="div">
+				Ingredients
+			</Typography>
 			<List dense>
 				{recipe.ingredients.map(ingredient => (
 					<ListItem key={ingredient.name}>
@@ -46,6 +49,14 @@ const RecipeDetailCard = ({ recipe }: { recipe: Recipe }) => (
 					</ListItem>
 				))}
 			</List>
+			<Typography variant="h6" component="div">
+				Total calories for this recipe:{' '}
+				{recipe.ingredients.reduce(
+					(acc, ingredient) =>
+						acc + ingredient.energy * (ingredient.amount.value / 100),
+					0
+				)}
+			</Typography>
 		</CardContent>
 	</Card>
 );

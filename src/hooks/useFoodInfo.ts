@@ -50,7 +50,6 @@ const fetchInfo = (search: string) => (): Promise<FoodInfo | undefined> =>
 			return undefined;
 		}
 		const food = parsed[0]?.food;
-		console.log(food);
 		return {
 			name: food.label,
 			image: food.image,

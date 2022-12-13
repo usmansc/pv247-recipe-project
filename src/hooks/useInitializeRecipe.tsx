@@ -21,10 +21,11 @@ const useInitializeRecipe = (recipeProp: Recipe) => {
 		setTag({ id: genUniqueId(), name: '' });
 	};
 
-	const addIngredientToRecipe = (name: string) => {
+	const addIngredientToRecipe = (name: string, calories: number) => {
 		ingredient.name = name;
 		ingredient.amount.unit = unit;
 		ingredient.amount = amount;
+		ingredient.energy = calories;
 		const newIngredients = [...recipe.ingredients, ingredient];
 		setRecipe({ ...recipe, ingredients: newIngredients });
 		setIngredientId(genUniqueId());
@@ -39,7 +40,8 @@ const useInitializeRecipe = (recipeProp: Recipe) => {
 			id: ingredientId,
 			recipe: recipe.id,
 			name: '',
-			amount
+			amount,
+			energy: 0
 		});
 	};
 
@@ -67,7 +69,6 @@ const useInitializeRecipe = (recipeProp: Recipe) => {
 	};
 
 	const addRecipe = () => {
-		console.log(recipe);
 		recipeProp ? updateRecipe() : createRecipe();
 	};
 
@@ -107,7 +108,8 @@ const useInitializeRecipe = (recipeProp: Recipe) => {
 		id: ingredientId,
 		recipe: recipe.id,
 		name: '',
-		amount
+		amount,
+		energy: 0
 	});
 
 	const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {

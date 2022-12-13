@@ -139,10 +139,16 @@ const AddRecipe = () => {
 				<Typography variant="h6" sx={{ alignSelf: 'center' }}>
 					GRAMS
 				</Typography>
+
 				{data?.name && amount.value && (
 					<Button
 						type="submit"
-						onClick={() => addIngredientToRecipe(data?.name ?? '')}
+						onClick={() =>
+							addIngredientToRecipe(
+								data?.name ?? '',
+								data.nutrients.energy.value ?? 0
+							)
+						}
 					>
 						Add Ingredient
 					</Button>
