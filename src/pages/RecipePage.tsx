@@ -62,9 +62,13 @@ const RecipePage = () => {
 		const getTags = async () => {
 			const querySnapshot = await getDocs(tagsCollection);
 			const tags: Tag[] = [];
+
 			querySnapshot.forEach(doc => {
-				tags.push(doc.data() as Tag);
+				if (!tags.some(tag => tag.name === doc.data().name)) {
+					tags.push(doc.data() as Tag);
+				}
 			});
+
 			setTags(tags);
 		};
 		getTags();
@@ -114,7 +118,7 @@ const RecipePage = () => {
 		}
 		const filteredRecipes = filteredTags.reduce((acc, tag) => {
 			const recipesWithTag = recipes.filter(recipe =>
-				recipe.tags.some(t => t.id === tag.id)
+				recipe.tags.some(t => t.name === tag.name)
 			);
 			return [...acc, ...recipesWithTag];
 		}, [] as Recipe[]);
