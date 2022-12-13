@@ -21,13 +21,14 @@ const useInitializeRecipe = (recipeProp: Recipe) => {
 		setTag({ id: genUniqueId(), name: '' });
 	};
 
-	const addIngredientToRecipe = () => {
+	const addIngredientToRecipe = (name: string) => {
+		ingredient.name = name;
 		ingredient.amount.unit = unit;
 		ingredient.amount = amount;
 		const newIngredients = [...recipe.ingredients, ingredient];
 		setRecipe({ ...recipe, ingredients: newIngredients });
 		setIngredientId(genUniqueId());
-		setUnit('');
+		setUnit('Grams');
 		setAmount({
 			id: genUniqueId(),
 			ingredient: ingredientId,
@@ -66,6 +67,7 @@ const useInitializeRecipe = (recipeProp: Recipe) => {
 	};
 
 	const addRecipe = () => {
+		console.log(recipe);
 		recipeProp ? updateRecipe() : createRecipe();
 	};
 
@@ -117,14 +119,13 @@ const useInitializeRecipe = (recipeProp: Recipe) => {
 	};
 
 	const handleTagClick = (tag: string) => {
-		const newTags = recipe.tags.filter(t => t.name !== tag);
+		const newTags = recipe.tags.filter(t => t.id !== tag);
 		setRecipe({ ...recipe, tags: newTags });
 	};
 
 	const handleIngredientClick = (ingredient: string) => {
-		const newIngredients = recipe.ingredients.filter(
-			i => i.name !== ingredient
-		);
+		console.log(ingredient);
+		const newIngredients = recipe.ingredients.filter(i => i.id !== ingredient);
 		setRecipe({ ...recipe, ingredients: newIngredients });
 	};
 

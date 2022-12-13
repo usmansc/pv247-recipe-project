@@ -133,16 +133,17 @@ const AddRecipe = () => {
 					label="Amount"
 					type="search"
 					fullWidth
-					value={amount.value}
+					value={isNaN(amount.value) ? 0 : amount.value}
 					onChange={handleAmountChange}
-					inputMode="numeric"
-					defaultValue={0}
 				/>
 				<Typography variant="h6" sx={{ alignSelf: 'center' }}>
-					{unit}
+					GRAMS
 				</Typography>
-				{ingredient.name && amount.value && unit && (
-					<Button type="submit" onClick={addIngredientToRecipe}>
+				{data?.name && amount.value && (
+					<Button
+						type="submit"
+						onClick={() => addIngredientToRecipe(data?.name ?? '')}
+					>
 						Add Ingredient
 					</Button>
 				)}
@@ -189,7 +190,7 @@ const AddRecipe = () => {
 			<Button
 				type="submit"
 				onClick={() => {
-					addRecipe;
+					addRecipe();
 					// check if all required fields are filled
 					if (
 						recipe.name &&
