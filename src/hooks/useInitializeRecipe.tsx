@@ -21,10 +21,6 @@ const genUniqueId = () => {
 };
 
 const useInitializeRecipe = (recipeProp: Recipe) => {
-	const addRecipe = useCallback(() => {
-		recipeProp ? updateRecipe() : createRecipe();
-	}, [recipeProp]);
-
 	const [ingredientId, setIngredientId] = useState<string>(genUniqueId());
 
 	const user = useLoggedInUser();
@@ -110,6 +106,10 @@ const useInitializeRecipe = (recipeProp: Recipe) => {
 			)
 		]);
 	}, [recipe]);
+
+	const addRecipe = useCallback(() => {
+		recipeProp ? updateRecipe() : createRecipe();
+	}, [recipeProp, updateRecipe, createRecipe]);
 
 	const handleAmountChange = useCallback(
 		(event: React.ChangeEvent<HTMLInputElement>) => {
