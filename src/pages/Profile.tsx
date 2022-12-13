@@ -1,16 +1,8 @@
 import { Button, Grid, Paper, TextField, Typography } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
-import {
-	deleteDoc,
-	getDoc,
-	getDocs,
-	query,
-	setDoc,
-	where
-} from 'firebase/firestore';
+import { getDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
 
 import { UserAvatar } from '../components/UserAvatar';
-import { Category, CategorySelection } from '../components/CategorySelection';
 import useField from '../hooks/useField';
 import { emailValidator, requiredValidator } from '../utils/validation';
 import useLoggedInUser from '../hooks/useLoggedInUser';
@@ -69,7 +61,9 @@ const Profile = () => {
 			const querySnapshot = await getDocs(tagsCollection);
 			const tags: Tag[] = [];
 			querySnapshot.forEach(doc => {
-				tags.push(doc.data() as Tag);
+				if (!tags.some(tag => tag.name === doc.data().name)) {
+					tags.push(doc.data() as Tag);
+				}
 			});
 			setTags(tags);
 		};
@@ -138,11 +132,12 @@ const Profile = () => {
 
 					const tag = tags.find(tag => tag.id === id);
 					if (tag && user) {
+						const name = tag.name;
 						// Update the filteredTags state by adding or removing the tag
-						if (filteredTags.some(tag => tag.id === id)) {
-							setFilteredTags(filteredTags.filter(tag => tag.id !== id));
+						if (filteredTags.some(tag => tag.name === name)) {
+							setFilteredTags(filteredTags.filter(tag => tag.name !== name));
 							setDoc(userDocument(user?.uid), {
-								filteredTags: filteredTags.filter(tag => tag.id !== id)
+								filteredTags: filteredTags.filter(tag => tag.name !== name)
 							});
 						} else {
 							setFilteredTags([...filteredTags, tag]);
