@@ -33,7 +33,7 @@ const AddRecipe = () => {
 	const [open, setOpen] = useState(false);
 
 	const onChange = useCallback(
-		(_event: any, value: string | null) => {
+		(_event: unknown, value: string | null) => {
 			setSearch(value ?? '');
 		},
 		[setSearch]
