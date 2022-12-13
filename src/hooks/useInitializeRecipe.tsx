@@ -108,7 +108,11 @@ const useInitializeRecipe = (recipeProp: Recipe) => {
 	}, [recipe]);
 
 	const addRecipe = useCallback(() => {
-		recipeProp ? updateRecipe() : createRecipe();
+		const callback = recipeProp ? updateRecipe : createRecipe;
+		callback().catch(error => {
+			alert('Failed to add recipe');
+			console.error('Failed to add recipe', error);
+		});
 	}, [recipeProp, updateRecipe, createRecipe]);
 
 	const handleAmountChange = useCallback(
