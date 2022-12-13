@@ -1,11 +1,11 @@
-import { Paper, Typography } from '@mui/material';
+import { Paper } from '@mui/material';
 
 import { Nutrient } from '../hooks/useFoodInfo';
 
 import RecipePage from './RecipePage';
 
 const Home = () => (
-	<Paper>
+	<Paper sx={{ py: 4, px: 2 }}>
 		<RecipePage />
 	</Paper>
 );
