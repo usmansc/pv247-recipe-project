@@ -7,7 +7,7 @@ import {
 	query,
 	where
 } from 'firebase/firestore';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
 import RecipeDetail from '../components/RecipeDetail';
@@ -106,9 +106,7 @@ const RecipePage = () => {
 			});
 			setRecipes(recipes);
 		};
-		return () => {
-			getRecipes();
-		};
+		getRecipes();
 	}, []);
 
 	useEffect(() => {
